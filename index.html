@@ -3,39 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tap List Menu</title>
+    <title>Beer Tap List</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
-            padding: 20px;
+            font-family: Arial, sans-serif;
         }
-        .tap-list {
-            list-style-type: none;
-            padding: 0;
+        .parallax {
+            /* Set a specific height */
+            height: 100vh;
+            /* Create the parallax effect */
+            background-image: url('images/image1.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
         }
-        .tap-list li {
-            background: #fff;
-            margin: 5px 0;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+        /* Parallax sections for other images */
+        .parallax2 {
+            background-image: url('images/image2.jpg');
+        }
+        .parallax3 {
+            background-image: url('images/image3.jpg');
+        }
+        .parallax4 {
+            background-image: url('images/image4.jpg');
         }
     </style>
 </head>
 <body>
-    <h1>Tap List Menu</h1>
-    <ul class="tap-list">
-        <li>Tap 1: Pale Ale</li>
-        <li>Tap 2: IPA</li>
-        <li>Tap 3: Stout</li>
-        <li>Tap 4: Lager</li>
-        <li>Tap 5: Wheat Beer</li>
-    </ul>
-    <script>
-        // JavaScript functionality can be added here
-        console.log("Tap List Loaded");
-    </script>
+    <div class="parallax">
+        <div class="overlay">
+            <h1>Beer Tap List</h1>
+        </div>
+    </div>
+    <div class="parallax parallax2">
+        <div class="overlay">
+            <h2>New Arrivals</h2>
+        </div>
+    </div>
+    <div class="parallax parallax3">
+        <div class="overlay">
+            <h2>Special Offers</h2>
+        </div>
+    </div>
+    <div class="parallax parallax4">
+        <div class="overlay">
+            <h2>Best Sellers</h2>
+        </div>
+    </div>
+    <div class="beer-list">
+        <h2>Check out our beer selection below:</h2>
+        <ul>
+            <li>Beer 1: Description</li>
+            <li>Beer 2: Description</li>
+            <li>Beer 3: Description</li>
+            <!-- Additional beer items go here -->
+        </ul>
+    </div>
 </body>
 </html>
