@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+</head>
+<body>
+    <h1>QR Code Generator</h1>
+    <div id="qrcode"></div>
+    <script>
+        $(document).ready(function() {
+            var tapListUrl = 'https://your-tap-list-url.com'; // Replace with your tap list menu URL
+            $('#qrcode').qrcode(tapListUrl);
+        });
+    </script>
+</body>
+</html>
