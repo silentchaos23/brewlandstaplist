@@ -3,77 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beer Tap List</title>
+    <title>Brewlands Tap List</title>
     <style>
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
             font-family: Arial, sans-serif;
+            background: #0a0a0a;
+            color: white;
         }
         .parallax {
-            /* Set a specific height */
             height: 100vh;
-            /* Create the parallax effect */
             background-image: url('images/image1.jpg');
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
         }
-        .overlay {
+        .parallax::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .parallax h1 {
+            position: relative;
+            z-index: 2;
+            font-size: 4em;
+            text-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .search-bar {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ffcc00;
+            border-radius: 5px;
+            background: #222;
             color: white;
-            text-align: center;
         }
-        /* Parallax sections for other images */
-        .parallax2 {
-            background-image: url('images/image2.jpg');
+        .beer-section {
+            margin: 30px 0;
+            background: rgba(20, 20, 20, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ffcc00;
         }
-        .parallax3 {
-            background-image: url('images/image3.jpg');
+        .beer-section h2 {
+            color: #ffcc00;
+            margin-bottom: 15px;
         }
-        .parallax4 {
-            background-image: url('images/image4.jpg');
+        .beer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(30, 30, 30, 0.9);
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 3px solid #ffcc00;
+        }
+        .tap-number {
+            background: #ffcc00;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        .beer-name {
+            font-weight: bold;
+            color: white;
+        }
+        .beer-details {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        .beer-abv {
+            color: #ffcc00;
+            font-weight: bold;
+            margin-left: 20px;
         }
     </style>
 </head>
 <body>
     <div class="parallax">
-        <div class="overlay">
-            <h1>Beer Tap List</h1>
+        <h1>🍺 BREWLANDS 🍺</h1>
+    </div>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Search beers, styles, or breweries...">
         </div>
+        <div id="taplist"></div>
     </div>
-    <div class="parallax parallax2">
-        <div class="overlay">
-            <h2>New Arrivals</h2>
-        </div>
-    </div>
-    <div class="parallax parallax3">
-        <div class="overlay">
-            <h2>Special Offers</h2>
-        </div>
-    </div>
-    <div class="parallax parallax4">
-        <div class="overlay">
-            <h2>Best Sellers</h2>
-        </div>
-    </div>
-    <div class="beer-list">
-        <h2>Check out our beer selection below:</h2>
-        <ul>
-            <li>Beer 1: Description</li>
-            <li>Beer 2: Description</li>
-            <li>Beer 3: Description</li>
-            <!-- Additional beer items go here -->
-        </ul>
-    </div>
+    <script>
+        let allBeers = [];
+        fetch('beers.json')
+            .then(response => response.json())
+            .then(data => {
+                allBeers = data.beers;
+                displayBeers(allBeers);
+            });
+        function displayBeers(beers) {
+            const container = document.getElementById('taplist');
+            container.innerHTML = '';
+            const grouped = {};
+            beers.forEach(beer => {
+                if (!grouped[beer.style]) {
+                    grouped[beer.style] = [];
+                }
+                grouped[beer.style].push(beer);
+            });
+            Object.keys(grouped).sort().forEach(style => {
+                const section = document.createElement('div');
+                section.className = 'beer-section';
+                section.innerHTML = `<h2>${style}</h2>`;
+                grouped[style].forEach(beer => {
+                    const item = document.createElement('div');
+                    item.className = 'beer-item';
+                    item.innerHTML = `
+                        <span class="tap-number">#${beer.tap}</span>
+                        <div>
+                            <div class="beer-name">${beer.name}</div>
+                            <div class="beer-details">${beer.brewery}</div>
+                        </div>
+                        <div class="beer-abv">${beer.abv}</div>
+                    `;
+                    section.appendChild(item);
+                });
+                container.appendChild(section);
+            });
+        }
+        document.getElementById('search').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            const filtered = allBeers.filter(beer => 
+                beer.name.toLowerCase().includes(term) ||
+                beer.brewery.toLowerCase().includes(term) ||
+                beer.style.toLowerCase().includes(term)
+            );
+            displayBeers(filtered);
+        });
+    </script>
 </body>
 </html>
